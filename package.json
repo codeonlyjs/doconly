@@ -19,7 +19,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@codeonlyjs/core": "github:codeonlyjs/core",
+    "@codeonlyjs/stdapp": "file:../stdapp",
     "@codeonlyjs/stylish": "github:codeonlyjs/stylish",
-    "@codeonlyjs/stdapp": "file:../stdapp"
+    "yaml": "^2.9.0"
   }
 }
