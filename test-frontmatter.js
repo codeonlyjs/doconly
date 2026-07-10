@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { parseFrontMatter } from "./frontmatter.js";
+import { parseFrontMatter } from "./frontMatter.js";
 
 test("None", () => {
     let r = parseFrontMatter(`markdown`);

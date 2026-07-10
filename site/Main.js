@@ -41,9 +41,11 @@ router.register({
 });
 
 
-export function docmain(options)
+export function main(options)
 {
     initApp(Object.assign({
         logoUrl: "/content/logo.svg",
+        name: "Los Angeles",
+        description: "LA is Cool",
     }, options));
 }

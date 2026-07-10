@@ -1,0 +1,18 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+    const theme = window.localStorage.getItem("stylish-theme");
+    if (theme) document.documentElement.classList.add(theme);
+    </script>
+    <link href="/modules/@codeonlyjs/stylish/stylish.css" type="text/css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/content/favicon.svg">
+</head>
+<body>
+    <script type="module">
+        import { main } from "./Main.js";
+        main();
+    </script>
+</body>
+</html>
