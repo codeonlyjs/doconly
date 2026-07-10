@@ -43,5 +43,7 @@ router.register({
 
 export function docmain(options)
 {
-    initApp(options);
+    initApp(Object.assign({
+        logoUrl: "/content/logo.svg",
+    }, options));
 }
