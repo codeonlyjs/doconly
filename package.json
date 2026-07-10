@@ -1,0 +1,25 @@
+{
+  "name": "@codeonlyjs/doconly",
+  "version": "0.0.1",
+  "description": "A Markdown based documentation browser",
+  "main": "./index.js",
+  "module": "./index.js",
+  "type": "module",
+  "author": "Topten Software",
+  "contributors": [
+    {
+      "name": "Brad Robinson",
+      "email": "contact@toptensoftware.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeonlyjs/doconly.git"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@codeonlyjs/core": "github:codeonlyjs/core",
+    "@codeonlyjs/stylish": "github:codeonlyjs/stylish",
+    "@codeonlyjs/stdapp": "file:../stdapp"
+  }
+}
