@@ -1,11 +1,10 @@
-import { router, fetchTextAsset } from "@codeonlyjs/core";
+import { router, fetchTextAsset, fetchJsonAsset } from "@codeonlyjs/core";
 import { initApp, MarkdownPage, ErrorPage, LayoutDocumentation, TocPanel } from "@codeonlyjs/stdapp";
+import { parseFrontMatter } from "@codeonlyjs/frontmatter";
 
 let tocPanel = new TocPanel();
 
-import(router.externalize("/content/toc.js")).then((m) => {
-    tocPanel.toc = m.data.toc;
-});
+fetchJsonAsset("/content/toc.json").then(toc => tocPanel.toc = toc);
 
 router.register({
     match: async (to) => {
@@ -20,9 +19,10 @@ router.register({
 
             // Fetch it and check status
             let md = await fetchTextAsset(fetchUrl);
+            let fm = parseFrontMatter(md);
 
             // Create page
-            to.page = new MarkdownPage(md);
+            to.page = new MarkdownPage(fm.markdown);
             to.page.layout = LayoutDocumentation;
             to.page.primaryNavigation = tocPanel;
             return true;
