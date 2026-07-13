@@ -12,6 +12,7 @@ import path from "node:path";
 import url from 'node:url';
 import { buildToc } from "./buildToc.js";
 import { buildContent } from "./buildContent.js";
+import { generateStatic } from '@codeonlyjs/core';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
@@ -26,6 +27,7 @@ function content(options)
                 let toc = await buildToc(options.contentDir);
                 let content = await buildContent(options.contentDir);
                 content["/content/toc.json"] = toc;
+                options.content = content;
                 let js = `
 import { registerFetchAssetHandler } from "@codeonlyjs/core";
 
@@ -40,6 +42,60 @@ registerFetchAssetHandler((url) => {
             }
         }
     };
+}
+
+function ssg(options) {
+  return {
+    name: 'ssg',
+    async generateBundle(opts, bundle) {
+
+      // Find the generated index.html asset
+      const htmlAsset = Object.values(bundle).find(
+        f => f.type === 'asset' && f.fileName == "index.html"
+      );
+
+      // Check found
+      if (!htmlAsset) 
+      {
+        this.warn('index.html asset not found in bundle, SSG abandoned');
+        return;
+      }
+
+      // Get HTML source
+      const entryHtml = typeof htmlAsset.source === 'string'
+        ? htmlAsset.source
+        : Buffer.from(htmlAsset.source).toString('utf-8');
+
+      let generated = await generateStatic({
+        entryFile: path.join(__dirname, "site", "Main.js"),
+        entryHtml,
+        entryParams: [{
+          content: options.content,
+        }],
+      });
+
+      for (let g of generated.files)
+      {
+        let assetName = g.url;
+        if (assetName.startsWith("./"))
+          assetName = assetName.substring(2);
+        const existing = bundle[assetName];
+
+        if (existing && existing.type === 'asset') 
+        {
+          existing.source = g.content;
+        } 
+        else 
+        {
+          this.emitFile({
+            type: 'asset',
+            fileName: assetName,
+            source: g.content
+          });
+        }      
+      }
+    }
+  };
 }
 
 
@@ -67,6 +123,7 @@ export async function runBuild(options)
       }),
       commonjs(),
       terser(),
+      ssg(options),
       copy({
         patterns: './public/**/*',
       }),

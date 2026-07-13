@@ -1,10 +1,8 @@
-import { router, fetchJsonAsset } from "@codeonlyjs/core";
+import { router, fetchJsonAsset, registerFetchAssetHandler } from "@codeonlyjs/core";
 import { initApp, DocumentPage, ErrorPage, LayoutDocumentation, TocPanel } from "@codeonlyjs/stdapp";
 import "./content.js";
 
 let tocPanel = new TocPanel();
-
-fetchJsonAsset("/content/toc.json").then(toc => tocPanel.toc = toc);
 
 router.register({
     match: async (to) => {
@@ -42,6 +40,19 @@ router.register({
 
 export function main(options)
 {
+    // Content passed from SSG
+    if (options?.content)
+    {
+        registerFetchAssetHandler((url) => {
+            if (options.content[url] !== undefined)
+                return { json: options.content[url] }
+        });
+    }
+
+    // Fetch TOC
+    fetchJsonAsset("/content/toc.json").then(toc => tocPanel.toc = toc);
+
+    // Init ap
     initApp(Object.assign({
         logoUrl: "/content/logo.svg",
         name: "Los Angeles",
