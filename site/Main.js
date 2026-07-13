@@ -1,5 +1,6 @@
 import { router, fetchJsonAsset } from "@codeonlyjs/core";
 import { initApp, DocumentPage, ErrorPage, LayoutDocumentation, TocPanel } from "@codeonlyjs/stdapp";
+import "./content.js";
 
 let tocPanel = new TocPanel();
 

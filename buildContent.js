@@ -31,7 +31,7 @@ export async function buildContent(baseDir, options)
                 let page = renderPage(await fs.readFile(path.join(baseDir, dir, f.name), "utf8"));
 
                 // Work out public url
-                let url = "/" + path.join(dir, f.name.slice(0, -3) + ".json");
+                let url = "/content/" + path.join(dir, f.name.slice(0, -3) + ".json");
                 url = url.replace(/\\/g, "/");
                 
                 content[url] = page;
