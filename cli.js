@@ -1,96 +1,79 @@
-import url from 'node:url';
-import path from "node:path";
-import fs from "node:fs/promises";
-import merge from "deepmerge";
-import { serve } from "@codeonlyjs/coserv";
-import { buildToc } from './buildToc.js';
-import { renderPage } from "./renderPage.js";
+import { clargs, showArgs, showPackageVersion } from "@toptensoftware/clargs";
 
-const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+import { runServer } from "./server.js";
+import { runBuild } from "./build.js";
 
-let contentDir = path.join(process.cwd());
-let siteDir = path.join(__dirname, "site");
-
-let handlers = [
-    { 
-        // Serve markdown files, throw error if not found
-        url: "/content", 
-        path: contentDir, 
-        fallthrough: false,
-    },
-    { 
-        // Serve site, fallback to spa if not found
-        url: "/", 
-        path: siteDir,
-        extensions: [ 'html' ],
-        spa: true,
-    },
-]; 
-
-async function handleToc(req, res)
+function showVersion()
 {
-    let toc = await buildToc(contentDir);
-    res.json(toc);
+    showPackageVersion(path.join(__dirname, "package.json"));
 }
 
-async function handleContent(req, res, next)
+function showHelp()
 {
-    if (!req.url.endsWith(".json"))
-        return next();
+    showVersion();
 
-    // Read markdown file
-    let markdown;
-    try
-    {
-        let filePath = path.join(contentDir, req.url.slice(0, -5) + ".md");
-        markdown = await fs.readFile(filePath, "utf8");
-    }
-    catch (err)
-    {
-        if (err.code == "ENOENT")
-            next();
-        throw err;
-    }
+    console.log("\nUsage: npx codeonlyjs/doconly <options> [dir]");
 
-    // Render it
-    let page = renderPage(markdown);
-    res.json(page);
+    console.log("\nOptions:");
+    showArgs({
+        "--build": "Build toc.json and content.json",
+        "--out": "Directory to write build files",
+        "<dir>": "Root content directory"
+    });
 }
 
-let config = 
-{
-    baseDir: siteDir,
-    development: {
-        serve: [
-            { url: "/content/toc.json", handler: handleToc },
-            { url: "/content", handler: handleContent },
-            ...handlers
-        ],
-        modules: [ 
-            "@codeonlyjs/core",
-            "@codeonlyjs/stylish",
-            "@codeonlyjs/stdapp",
-        ],
-        replace: [
-            { from: "./Main.js", to: "/Main.js" },
-        ],
-        livereload: {
-            extraExts: [ "md" ],
-        },
-        watch: [
-            contentDir
-        ],
-    },
-    production: {
-        serve: handlers
-    }
+let cl = {
+    contentDir: ".",
+    outDir: ".",
 };
+let args = clargs();
+while (args.next())
+{
+    switch (args.name)
+    {
+        case "build":
+            cl.build = true;
+            break;
 
-config = merge.all([
-    config,
-    config[process.env.NODE_ENV ?? "development"] ?? {},
-], { arrayMerge: (d, s, opt) => s });
+        case "out":
+            cl.outDir = args.readValue();
+            break;
+
+        case "show-config":
+            cl.showConfig = args.readBoolValue();
+            break;
+
+        case "p":
+        case "port":
+            cl.port = args.readIntValue();
+            break;
+
+        case "v":
+        case "version":
+            showVersion();
+            process.exit(0);
+
+        case "h":
+        case "help":
+            showHelp();
+            process.exit(0);
+
+        case null:
+            cl.contentDir = args.readValue();
+            break;
+
+        default:
+            console.log(`Unknown command line option '${args.name}'`);
+            process.exit(7);
+    }
+}
 
 
-
-serve(config);
+if (cl.build)
+{
+    await runBuild(cl);
+}
+else
+{
+    runServer(cl);
+}

@@ -1,18 +1,7 @@
 import path from "node:path";
 import fs from "node:fs/promises";
 import { parseFrontMatter } from "./frontMatter.js";
-
-async function readdirWithStat(dir)
-{
-    const names = await fs.readdir(dir);
-    return Promise.all(
-        names.map(async (name) => {
-            const full = path.join(dir, name);
-            const stat = await fs.stat(full);
-            return { name, stat };
-        })
-    );
-}
+import { readdirWithStat } from "./utils.js";
 
 export async function buildToc(baseDir, options)
 {
@@ -37,7 +26,7 @@ export async function buildToc(baseDir, options)
             if (f.name.endsWith(".md"))
             {
                 // Parse front matter
-                let e = parseFrontMatter(await fs.readFile(path.join(dir, f.name), "utf8"));
+                let e = parseFrontMatter(await fs.readFile(path.join(baseDir, dir, f.name), "utf8"));
 
                 // Work out web url
                 let url;
