@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from "node:fs/promises";
-import { parseFrontMatter } from "@codeonlyjs/frontmatter";
+import { parseFrontMatter } from "./frontMatter.js";
 
 async function readdirWithStat(dir)
 {

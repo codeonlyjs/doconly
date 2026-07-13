@@ -21,7 +21,6 @@
     "@codeonlyjs/cogent": "github:codeonlyjs/cogent",
     "@codeonlyjs/core": "github:codeonlyjs/core",
     "@codeonlyjs/coserv": "github:codeonlyjs/coserv",
-    "@codeonlyjs/frontmatter": "github:codeonlyjs/frontmatter",
     "@codeonlyjs/stdapp": "github:codeonlyjs/stdapp",
     "@codeonlyjs/stylish": "github:codeonlyjs/stylish",
     "@rollup/plugin-commonjs": "^29.0.3",
@@ -30,6 +29,7 @@
     "@rollup/plugin-terser": "^1.0.0",
     "@web/rollup-plugin-copy": "^0.5.1",
     "@web/rollup-plugin-html": "^3.1.0",
+    "highlight.js": "^11.11.1",
     "rollup": "^4.62.2",
     "yaml": "^2.9.0"
   }

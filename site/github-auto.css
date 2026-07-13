@@ -1,0 +1,198 @@
+
+/*!
+  Theme: GitHub Auto
+  Description: Auto-switching light/dark theme as seen on github.com
+ */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--hljs-border) transparent;
+}
+code.hljs {
+  padding: 3px 5px;
+  border: 1px solid var(--hljs-border);
+  border-radius: 6px; 
+}
+
+.hljs {
+  color: var(--hljs-color);
+  background: var(--hljs-background);
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  color: var(--hljs-syntax-keyword);
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  color: var(--hljs-syntax-entity)
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: var(--hljs-syntax-constant);
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  color: var(--hljs-syntax-string);
+}
+.hljs-built_in,
+.hljs-symbol {
+  color: var(--hljs-syntax-variable);
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  color: var(--hljs-syntax-comment);
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  color: var(--hljs-syntax-entity-tag);
+}
+.hljs-subst {
+  color: var(--hljs-syntax-storage-modifier-import);
+}
+.hljs-section {
+  color: var(--hljs-syntax-storage-modifier-import);
+  font-weight: bold
+}
+.hljs-bullet {
+  color: var(--hljs-syntax-markup-list);
+}
+.hljs-emphasis {
+  color: var(--hljs-syntax-markup-italic);
+}
+.hljs-strong {
+  color: var(--hljs-syntax-markup-bold);
+  font-weight: bold
+}
+.hljs-addition {
+  color: var(--hljs-syntax-markup-inserted);
+  background-color: var(--hljs-syntax-markup-inserted-background);
+}
+.hljs-deletion {
+  color: var(--hljs-syntax-markup-deleted);
+  background-color: var(--hljs-syntax-markup-deleted-background);
+}
+
+/* explicit "light" class on html root */
+:root.light
+{
+  --hljs-color: #24292e;
+  --hljs-background: #f0f0f0;
+  --hljs-border: #c0c0c0;
+  --hljs-syntax-keyword: #d73a49;
+  --hljs-syntax-entity: #6f42c1;
+  --hljs-syntax-constant: #005cc5;
+  --hljs-syntax-string: #032f62;
+  --hljs-syntax-variable: #e36209;
+  --hljs-syntax-comment: #6a737d;
+  --hljs-syntax-entity-tag: #22863a;
+  --hljs-syntax-storage-modifier-import: #24292e;
+  --hljs-syntax-markup-heading: #005cc5;
+  --hljs-syntax-markup-list: #735c0f;
+  --hljs-syntax-markup-italic: #24292e;
+  --hljs-syntax-markup-bold: #24292e;
+  --hljs-syntax-markup-inserted: #22863a;
+  --hljs-syntax-markup-inserted-background: #f0fff4;
+  --hljs-syntax-markup-deleted: #b31d28;
+  --hljs-syntax-markup-deleted-background: #ffeef0;
+}
+
+/* explicit "light" class on html root */
+:root.dark
+{
+  --hljs-color: #c9d1d9;
+  --hljs-background: #202020;
+  --hljs-border: #303030;
+  --hljs-syntax-keyword: #ff7b72;
+  --hljs-syntax-entity: #d2a8ff;
+  --hljs-syntax-constant:#79c0ff;
+  --hljs-syntax-string: #a5d6ff;
+  --hljs-syntax-variable: #ffa657;
+  --hljs-syntax-comment: #8b949e;
+  --hljs-syntax-entity-tag: #7ee787;
+  --hljs-syntax-storage-modifier-import: #c9d1d9;
+  --hljs-syntax-markup-heading: #1f6feb;
+  --hljs-syntax-markup-list: #f2cc60;
+  --hljs-syntax-markup-italic: #c9d1d9;
+  --hljs-syntax-markup-bold: #c9d1d9;
+  --hljs-syntax-markup-inserted: #aff5b4;
+  --hljs-syntax-markup-inserted-background: #033a16;
+  --hljs-syntax-markup-deleted: #ffdcd7;
+  --hljs-syntax-markup-deleted-background: #67060c;
+}
+
+
+/* auto light fall back for no light/dark class on html root */
+@media (prefers-color-scheme: light)
+{
+  :root
+  {
+    --hljs-color: #24292e;
+    --hljs-background: #f0f0f0;
+    --hljs-border: #c0c0c0;
+    --hljs-syntax-keyword: #d73a49;
+    --hljs-syntax-entity: #6f42c1;
+    --hljs-syntax-constant: #005cc5;
+    --hljs-syntax-string: #032f62;
+    --hljs-syntax-variable: #e36209;
+    --hljs-syntax-comment: #6a737d;
+    --hljs-syntax-entity-tag: #22863a;
+    --hljs-syntax-storage-modifier-import: #24292e;
+    --hljs-syntax-markup-heading: #005cc5;
+    --hljs-syntax-markup-list: #735c0f;
+    --hljs-syntax-markup-italic: #24292e;
+    --hljs-syntax-markup-bold: #24292e;
+    --hljs-syntax-markup-inserted: #22863a;
+    --hljs-syntax-markup-inserted-background: #f0fff4;
+    --hljs-syntax-markup-deleted: #b31d28;
+    --hljs-syntax-markup-deleted-background: #ffeef0;
+  }
+}
+
+/* auto dark fall back for no light/dark class on html root */
+@media (prefers-color-scheme: dark)
+{
+  :root
+  {
+    --hljs-color: #c9d1d9;
+    --hljs-background: #080808;
+    --hljs-border: #303030;
+    --hljs-syntax-keyword: #ff7b72;
+    --hljs-syntax-entity: #d2a8ff;
+    --hljs-syntax-constant:#79c0ff;
+    --hljs-syntax-string: #a5d6ff;
+    --hljs-syntax-variable: #ffa657;
+    --hljs-syntax-comment: #8b949e;
+    --hljs-syntax-entity-tag: #7ee787;
+    --hljs-syntax-storage-modifier-import: #c9d1d9;
+    --hljs-syntax-markup-heading: #1f6feb;
+    --hljs-syntax-markup-list: #f2cc60;
+    --hljs-syntax-markup-italic: #c9d1d9;
+    --hljs-syntax-markup-bold: #c9d1d9;
+    --hljs-syntax-markup-inserted: #aff5b4;
+    --hljs-syntax-markup-inserted-background: #033a16;
+    --hljs-syntax-markup-deleted: #ffdcd7;
+    --hljs-syntax-markup-deleted-background: #67060c;
+  }
+}

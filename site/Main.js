@@ -1,6 +1,5 @@
-import { router, fetchTextAsset, fetchJsonAsset } from "@codeonlyjs/core";
-import { initApp, MarkdownPage, ErrorPage, LayoutDocumentation, TocPanel } from "@codeonlyjs/stdapp";
-import { parseFrontMatter } from "@codeonlyjs/frontmatter";
+import { router, fetchJsonAsset } from "@codeonlyjs/core";
+import { initApp, DocumentPage, ErrorPage, LayoutDocumentation, TocPanel } from "@codeonlyjs/stdapp";
 
 let tocPanel = new TocPanel();
 
@@ -15,14 +14,13 @@ router.register({
             let fetchUrl = `/content${to.url.pathname}`
             if (fetchUrl.endsWith("/"))
                 fetchUrl += "index";
-            fetchUrl += ".md";
+            fetchUrl += ".json";
 
             // Fetch it and check status
-            let md = await fetchTextAsset(fetchUrl);
-            let fm = parseFrontMatter(md);
+            let page = await fetchJsonAsset(fetchUrl);
 
             // Create page
-            to.page = new MarkdownPage(fm.markdown);
+            to.page = new DocumentPage(page.html);
             to.page.layout = LayoutDocumentation;
             to.page.primaryNavigation = tocPanel;
             return true;
