@@ -40,6 +40,10 @@ router.register({
 
 export function main(options)
 {
+    // Default options
+    options = Object.assign({
+    }, options);
+
     // Content passed from SSG
     if (options?.content)
     {
@@ -53,9 +57,5 @@ export function main(options)
     fetchJsonAsset("/content/toc.json").then(toc => tocPanel.toc = toc);
 
     // Init ap
-    initApp(Object.assign({
-        logoUrl: "/content/logo.svg",
-        name: "Los Angeles",
-        description: "LA is Cool",
-    }, options));
+    initApp(options);
 }
