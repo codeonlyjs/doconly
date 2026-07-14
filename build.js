@@ -33,13 +33,14 @@ function content(options)
                 let content = await buildContent(options.contentDir);
                 options.content = content;
                 let js = `
-import { registerFetchAssetHandler } from "@codeonlyjs/core";
+import { registerFetchAssetHandler, router } from "@codeonlyjs/core";
 
 export const toc = ${JSON.stringify(toc)};
 export const siteSettings = ${JSON.stringify(siteSettings)};
 const content = ${JSON.stringify(content)};
 
 registerFetchAssetHandler((url) => {
+    url = router.internalize(url);
     if (content[url] !== undefined)
         return { json: content[url] }
 });
@@ -164,7 +165,7 @@ export async function runBuild(options)
                 preventAssignment: true,
             }),
             commonjs(),
-            terser(),
+            ...options.terser ? [terser()] : [],
             ssg(options),
             copy({
                 patterns: '**/*.{png,jpg,jpeg,gif,svg,webp,ico,css,js}',

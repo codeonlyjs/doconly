@@ -25,6 +25,7 @@ function showHelp()
 let cl = {
     contentDir: ".",
     outDir: ".",
+    terser: false,
 };
 let args = clargs();
 while (args.next())

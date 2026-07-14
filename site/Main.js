@@ -1,8 +1,28 @@
-import { router, fetchJsonAsset, registerFetchAssetHandler } from "@codeonlyjs/core";
+import { router, UrlMapper, fetchJsonAsset, registerFetchAssetHandler } from "@codeonlyjs/core";
 import { initApp, DocumentPage, ErrorPage, LayoutDocumentation, TocPanel } from "@codeonlyjs/stdapp";
 import { toc, siteSettings } from "./content.js";
 
-let tocPanel = new TocPanel(toc);
+// Auto subpath mapper
+const url = new URL(import.meta.url);
+if (url.protocol === "http:" || url.protocol === "https:") 
+{
+    const parts = url.pathname.split("/"); // pathname starts with "/"
+    const assetsIndex = parts.indexOf("assets");
+    if (assetsIndex > 0)
+    {
+        let subpath = parts.slice(0, assetsIndex).join("/") + "/";
+        router.urlMapper = new UrlMapper({
+            base: subpath
+        });
+    }
+}
+
+function getTocPanel()
+{
+    if (coenv.tocPanel == null)
+        coenv.tocPanel = new TocPanel(toc);
+    return coenv.tocPanel;
+}
 
 router.register({
     match: async (to) => {
@@ -21,7 +41,7 @@ router.register({
             // Create page
             to.page = new DocumentPage(page.html);
             to.page.layout = LayoutDocumentation;
-            to.page.primaryNavigation = tocPanel;
+            to.page.primaryNavigation = getTocPanel();
             return true;
         }
         catch (err)
@@ -31,7 +51,7 @@ router.register({
                 message: err.message,
             })
             to.page.layout = LayoutDocumentation;
-            to.page.primaryNavigation = tocPanel;
+            to.page.primaryNavigation = getTocPanel();
             return true;
         }
     }
@@ -44,15 +64,15 @@ export function main(options)
     options = Object.assign({
     }, options);
 
-    // Content passed from SSG
+    // Content passed during from SSG generation
     if (options?.content)
     {
+        // Setup content handler
         registerFetchAssetHandler((url) => {
             if (options.content[url] !== undefined)
                 return { json: options.content[url] }
         });
     }
-
 
     // Init ap
     initApp(Object.assign(siteSettings, options));
