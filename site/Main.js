@@ -1,8 +1,8 @@
 import { router, fetchJsonAsset, registerFetchAssetHandler } from "@codeonlyjs/core";
 import { initApp, DocumentPage, ErrorPage, LayoutDocumentation, TocPanel } from "@codeonlyjs/stdapp";
-import "./content.js";
+import { toc, siteSettings } from "./content.js";
 
-let tocPanel = new TocPanel();
+let tocPanel = new TocPanel(toc);
 
 router.register({
     match: async (to) => {
@@ -10,7 +10,7 @@ router.register({
         try
         {
             // Get the url to fetch
-            let fetchUrl = `/content${to.url.pathname}`
+            let fetchUrl = `${to.url.pathname}`
             if (fetchUrl.endsWith("/"))
                 fetchUrl += "index";
             fetchUrl += ".json";
@@ -53,9 +53,7 @@ export function main(options)
         });
     }
 
-    // Fetch TOC
-    fetchJsonAsset("/content/toc.json").then(toc => tocPanel.toc = toc);
 
     // Init ap
-    initApp(options);
+    initApp(Object.assign(siteSettings, options));
 }
