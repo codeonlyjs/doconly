@@ -143,7 +143,8 @@ function findClosestNodeModules(startDir)
 
     while (true) {
         const candidate = path.join(dir, 'node_modules');
-        if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+        const test = path.join(candidate, "@codeonlyjs", "stylish");
+        if (fs.existsSync(test)) {
             return path.relative(startDir, candidate).replace(/\\/g, "/");
         }
 
