@@ -49,6 +49,21 @@ registerFetchAssetHandler((url) => {
                 options.contentJsSource = js;
                 return js;
             }
+        },
+        generateBundle(opts, bundle) 
+        {
+            for (const fileName in bundle) 
+            {
+                const item = bundle[fileName];
+                if (item.type !== 'asset') continue;
+                if (item.name !== 'favicon.svg') continue;
+
+                let userFavIcon = path.join(options.contentDir, "favicon.svg");
+                if (fs.existsSync(userFavIcon))
+                {
+                    item.source = fs.readFileSync(userFavIcon);
+                }
+            }
         }
     };
 }
