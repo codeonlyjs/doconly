@@ -26,7 +26,7 @@ function showHelp()
 
 let cl = {
     contentDir: ".",
-    outDir: ".",
+    outDir: "./dist",
     terser: true,
 };
 let args = clargs();
