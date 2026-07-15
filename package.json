@@ -1,9 +1,12 @@
 {
   "name": "@codeonlyjs/doconly",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A Markdown based documentation browser",
   "main": "./index.js",
   "module": "./index.js",
+  "bin": {
+    "doconly": "./cli.js"
+  },
   "type": "module",
   "author": "Topten Software",
   "contributors": [
@@ -18,7 +21,6 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@codeonlyjs/cogent": "github:codeonlyjs/cogent",
     "@codeonlyjs/core": "github:codeonlyjs/core",
     "@codeonlyjs/coserv": "github:codeonlyjs/coserv",
     "@codeonlyjs/stdapp": "github:codeonlyjs/stdapp",
