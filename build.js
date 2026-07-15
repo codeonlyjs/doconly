@@ -1,5 +1,6 @@
 import path from "node:path";
 import url from 'node:url';
+import fs from 'node:fs';
 import { registerHooks } from 'node:module';
 import { pathToFileURL } from 'node:url';
 import { readFileSync } from 'node:fs';
@@ -136,6 +137,24 @@ function ssg(options)
     };
 }
 
+function findClosestNodeModules(startDir) 
+{
+    let dir = path.resolve(startDir);
+
+    while (true) {
+        const candidate = path.join(dir, 'node_modules');
+        if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+            return path.relative(startDir, candidate).replace(/\\/g, "/");
+        }
+
+        const parent = path.dirname(dir);
+        if (parent === dir) {
+            // Reached the filesystem root without finding one
+            return null;
+        }
+        dir = parent;
+    }
+}
 
 // Run a build!
 export async function runBuild(options) 
@@ -143,9 +162,11 @@ export async function runBuild(options)
     // Locate the site template
     let siteDir = path.join(__dirname, "site");
 
+    let node_modules = findClosestNodeModules(siteDir);
+
     // Remap any direct /module urls to /node_modules
     const rawHtml = readFileSync(path.join(siteDir, 'index.html'), 'utf8');
-    const mappedHtml = rawHtml.replace(/\/modules/g, '../node_modules/');
+    const mappedHtml = rawHtml.replace(/\/modules/g, node_modules);
 
     // Run roll up
     const bundle = await rollup({
