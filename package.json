@@ -4,6 +4,9 @@
   "description": "A Markdown based documentation browser",
   "main": "./index.js",
   "module": "./index.js",
+  "scripts": {
+    "bump": "npm version patch && git push --follow-tags"
+  },
   "bin": {
     "doconly": "./cli.js"
   },
@@ -21,15 +24,15 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@codeonlyjs/core": "github:codeonlyjs/core",
-    "@codeonlyjs/coserv": "github:codeonlyjs/coserv",
-    "@codeonlyjs/stdapp": "github:codeonlyjs/stdapp",
-    "@codeonlyjs/stylish": "github:codeonlyjs/stylish",
+    "@codeonlyjs/core": "github:codeonlyjs/core#semver:^1.0.0",
+    "@codeonlyjs/coserv": "github:codeonlyjs/coserv#semver:^2.0.0",
+    "@codeonlyjs/stdapp": "github:codeonlyjs/stdapp#semver:^0.1.0",
+    "@codeonlyjs/stylish": "github:codeonlyjs/stylish#semver:^1.0.0",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-replace": "^6.0.3",
     "@rollup/plugin-terser": "^1.0.0",
-    "@toptensoftware/clargs": "github:toptensoftware/clargs",
+    "@toptensoftware/clargs": "github:toptensoftware/clargs#semver:^1.0.0",
     "@web/rollup-plugin-copy": "^0.5.1",
     "@web/rollup-plugin-html": "^3.1.0",
     "highlight.js": "^11.11.1",
