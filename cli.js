@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { clargs, showArgs, showPackageVersion } from "@toptensoftware/clargs";
 
 import { runServer } from "./server.js";
