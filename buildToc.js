@@ -65,7 +65,7 @@ export async function buildToc(baseDir, options)
         folderToc.children = children;
 
         if (!folderToc.title)
-            folderToc.title = path.basename(dir);
+            folderToc.title = path.basename(path.join(baseDir, dir));
 
         return folderToc;
     }

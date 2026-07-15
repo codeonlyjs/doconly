@@ -1,6 +1,6 @@
 {
   "name": "@codeonlyjs/doconly",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A Markdown based documentation browser",
   "main": "./index.js",
   "module": "./index.js",
