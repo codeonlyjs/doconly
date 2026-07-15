@@ -42,11 +42,6 @@ export async function buildToc(baseDir, options)
                     // Assign folder settings
                     if (e.data.folder)
                         Object.assign(folderToc, e.data.folder);
-
-                    // If still no title for this folder 
-                    // then use the first heading in the index
-                    if (!folderToc.title)
-                        folderToc.title = e.data.title;
                 }
                 else
                 {
@@ -68,6 +63,10 @@ export async function buildToc(baseDir, options)
         children.sort((a, b) => (a.sort??0) - (b.sort??0) || a.title.localeCompare(b.title))
         children.forEach(x => delete x.sort);
         folderToc.children = children;
+
+        if (!folderToc.title)
+            folderToc.title = path.basename(dir);
+
         return folderToc;
     }
 }

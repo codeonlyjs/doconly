@@ -138,7 +138,7 @@ the text of the first heading on the page is used, or the file name.
 
 The `sort` field allows control of sorting in the table of contents.  By default all
 pages have a sort index of 0 and pages are sorted by increasing sort order and then 
-alphabetically.
+alphabetically.  For convenience `index.md` files have a default sort order of -1000.
 
 
 ### Folder Settings

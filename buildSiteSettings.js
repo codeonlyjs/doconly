@@ -16,6 +16,8 @@ export async function buildSiteSettings(baseDir)
             siteSettings.logoUrl = siteSettings.logo;
             delete siteSettings.logo;
         }
+        if (!siteSettings.name)
+            siteSettings.name = path.basename(baseDir);
         return siteSettings;
     }
     catch (err)
