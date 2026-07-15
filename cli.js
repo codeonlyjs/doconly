@@ -25,7 +25,7 @@ function showHelp()
 let cl = {
     contentDir: ".",
     outDir: ".",
-    terser: false,
+    terser: true,
 };
 let args = clargs();
 while (args.next())
@@ -42,6 +42,10 @@ while (args.next())
 
         case "show-config":
             cl.showConfig = args.readBoolValue();
+            break;
+
+        case "terser":
+            cl.terser = args.readBoolValue();
             break;
 
         case "p":

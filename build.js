@@ -149,6 +149,17 @@ export async function runBuild(options)
 
     // Run roll up
     const bundle = await rollup({
+        treeshake: {
+            // commonmark's lib/*.js files (node.js, renderer.js, html.js, xml.js)
+            // build their "classes" via top-level `X.prototype.foo = fn` assignments
+            // rather than ES class syntax. Rollup can't prove those assignments are
+            // side-effect free, so it always keeps them - even when the class (e.g.
+            // HtmlRenderer/XmlRenderer/Node) is never used. Tell rollup these modules
+            // are side-effect free so unused exports get dropped along with everything
+            // they reference.
+            moduleSideEffects: (id) =>
+                !id.replace(/\\/g, '/').includes('/node_modules/commonmark/lib/'),
+        },
         plugins: [
             html({
                 input: { html: mappedHtml, name: 'index.html' },
