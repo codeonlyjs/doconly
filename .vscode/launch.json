@@ -8,7 +8,19 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch Server",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\cli.js",
+            "args": [ "content" ],
+            "cwd": "${workspaceFolder}/../LosAngeles/",
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run Build",
             "skipFiles": [
                 "<node_internals>/**"
             ],
