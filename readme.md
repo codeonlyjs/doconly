@@ -156,6 +156,32 @@ The `title` is used as the title of this folder in the table of contents.
 The `sort` field controls the sort order of this folder the the table of contents.
 
 
+### Styling
+
+DocOnly uses [stylish](https://github.com/codeonlyjs/stylish) for styling.  You can customize
+the styles by placing a file `styles.css` in the root folder of the project.
+
+```css
+:root
+{
+    --dark-accent-color: #3498db;
+    --light-accent-color: #3498db;
+    --dark-link-color: #3498db;
+    --light-link-color: #3498db;
+}
+```
+
+
+### FavIcon Support
+
+During development the dev server looks for `favicon.svg` in the project root.
+
+For deployment, you can use `favicon.svg`, `favicon.png` or `favicon.ico` - the first
+found (in that order) will be used.
+
+
+
+
 ## License
 
 Apache 2.0 - see [LICENSE](LICENSE)
