@@ -83,7 +83,7 @@ export const toc = ${JSON.stringify(toc, null, 4)};
         let markdown;
         try
         {
-            let filePath = path.join(contentDir, req.url.slice(0, -5) + ".md");
+            let filePath = path.join(contentDir, decodeURIComponent(req.url).slice(0, -5) + ".md");
             markdown = await fs.readFile(filePath, "utf8");
         }
         catch (err)
