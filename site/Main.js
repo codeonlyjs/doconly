@@ -42,6 +42,7 @@ router.register({
             to.page = new DocumentPage(page.html);
             to.page.layout = LayoutDocumentation;
             to.page.primaryNavigation = getTocPanel();
+            to.title = page.title;
             return true;
         }
         catch (err)
