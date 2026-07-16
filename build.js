@@ -50,6 +50,7 @@ registerFetchAssetHandler((url) => {
                 return js;
             }
         },
+        /*
         generateBundle(opts, bundle) 
         {
             for (const fileName in bundle) 
@@ -65,6 +66,7 @@ registerFetchAssetHandler((url) => {
                 }
             }
         }
+        */
     };
 }
 
@@ -181,8 +183,42 @@ export async function runBuild(options)
     let node_modules = findClosestNodeModules(siteDir);
 
     // Remap any direct /module urls to /node_modules
-    const rawHtml = readFileSync(path.join(siteDir, 'index.html'), 'utf8');
-    const mappedHtml = rawHtml.replace(/\/modules/g, node_modules);
+    let rawHtml = readFileSync(path.join(siteDir, 'index.html'), 'utf8');
+    let mappedHtml = rawHtml.replace(/\/modules/g, node_modules);
+
+    // Reroute to user's styles.css files
+    let stylesFile = path.join(options.contentDir, "styles.css");
+    if (fs.existsSync(stylesFile))
+    {
+        let stylesFileRel = path.relative(siteDir, stylesFile).replace(/\\/g, "/");
+        mappedHtml = mappedHtml.replace(/href=\"\/styles\.css\"/g, `href="${stylesFileRel}"`)
+    }
+
+    // Reroute to user's favicon (svg, png or ico)
+    let favIcon = path.join(options.contentDir, "favicon.svg");
+    let favIconType = "image/svg+xml"
+    if (!fs.existsSync(favIcon))
+    {
+        favIcon = path.join(options.contentDir, "favicon.png");
+        favIconType = "image/png"
+    }
+    if (!fs.existsSync(favIcon))
+    {
+        favIcon = path.join(options.contentDir, "favicon.png");
+        favIconType = "image/x-icon"
+    }
+    if (!fs.existsSync(favIcon))
+    {
+        favIcon = null;
+        favIconType = null;
+    }
+    let favDecl = "";
+    if (favIcon)
+    {
+        let favIconRel = path.relative(siteDir, favIcon).replace(/\\/g, "/");
+        favDecl = `<link rel="icon" type="${favIconType}" href="${favIconRel}"></link>`;
+    }
+    mappedHtml = mappedHtml.replace(`<link rel="icon" type="image/svg+xml" href="/favicon.svg">`, favDecl);
 
     // Run roll up
     const bundle = await rollup({
@@ -216,7 +252,7 @@ export async function runBuild(options)
             ...options.terser ? [terser()] : [],
             ssg(options),
             copy({
-                patterns: '**/*.{png,jpg,jpeg,gif,svg,webp,ico,css,js}',
+                patterns: '**/*.{png,jpg,jpeg,gif,svg,webp,ico}',
                 rootDir: options.contentDir,
             }),
         ],

@@ -37,11 +37,6 @@ export function runServer(options)
         },
     ]; 
 
-    async function handleContentJS(req, res)
-    {
-        res.json(toc);
-    }
-
     async function handleContentJS(req, res, next)
     {
         let toc = await buildToc(contentDir);
@@ -54,6 +49,29 @@ export const toc = ${JSON.stringify(toc, null, 4)};
 
         res.type('application/javascript')
         res.send(js);
+    }
+
+    async function handleStylesCSS(req, res, next)
+    {
+        let stylesFile = path.join(contentDir, "styles.css");
+
+        try
+        {
+            // If file exists, send t
+            await fs.stat(stylesFile);
+            res.sendFile(stylesFile);
+        }
+        catch (err)
+        {
+            if (err.code == "ENOENT")
+            {
+                // Otherwise, send empty file
+                res.type('text/css')
+                res.send("");
+            }
+            else
+                next(err);
+        }
     }
 
     async function handleContent(req, res, next)
@@ -86,6 +104,7 @@ export const toc = ${JSON.stringify(toc, null, 4)};
         development: {
             serve: [
                 { url: "/content.js", handler: handleContentJS },
+                { url: "/styles.css", handler: handleStylesCSS},
                 { url: "/", handler: handleContent },
                 ...handlers
             ],
